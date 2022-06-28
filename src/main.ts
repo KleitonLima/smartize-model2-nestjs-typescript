@@ -12,6 +12,8 @@ async function bootstrap() {
     .setTitle('Smart Store')
     .setDescription('API responsável pela gestão da Loja Smart Store')
     .setVersion('1.0.0')
+    .addTag('status')
+    .addTag('users')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
