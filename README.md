@@ -5,7 +5,7 @@ Repositório da API da Smart Store, utilizando o [Nest](https://github.com/nestj
 ## Clonando o repositório
 
 ```
-git clone 
+git clone https://github.com/KleitonLima/smart-store-back-m4.git
 ```
 
 ## Instalação
