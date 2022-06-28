@@ -7,7 +7,7 @@ import { User } from './entity/users.entity';
 export class UsersService {
   users: User[] = [];
 
-  getAll() {
+  getAll(): User[] {
     return this.users;
   }
 
