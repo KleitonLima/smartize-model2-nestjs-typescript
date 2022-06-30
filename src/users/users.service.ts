@@ -11,6 +11,10 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
+  getById(id: string): Promise<User> {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
   create(dto: CreateUserDto): Promise<User> {
     return this.prisma.user.create({ data: dto });
   }

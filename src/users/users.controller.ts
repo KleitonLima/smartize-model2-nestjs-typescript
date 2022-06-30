@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entity/users.entity';
@@ -15,6 +15,14 @@ export class UsersController {
   })
   getAll(): Promise<User[]> {
     return this.usersService.getAll();
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Lista usuário pelo id',
+  })
+  getById(@Param('id') id: string): Promise<User> {
+    return this.usersService.getById(id);
   }
 
   @Post()
