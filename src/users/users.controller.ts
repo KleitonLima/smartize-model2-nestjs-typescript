@@ -17,8 +17,11 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto): User {
-  //   // return this.usersService.create(createUserDto);
-  // }
+  @Post()
+  @ApiOperation({
+    summary: 'Cria um novo usuário',
+  })
+  create(@Body() dto: CreateUserDto): Promise<User> {
+    return this.usersService.create(dto);
+  }
 }
