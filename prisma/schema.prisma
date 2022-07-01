@@ -15,6 +15,21 @@ model User {
   name      String
   email     String   @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user")
+}
+
+model Game {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  genre       String
+  price       Float
+  image       String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("game")
 }
