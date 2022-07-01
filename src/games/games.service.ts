@@ -16,8 +16,8 @@ export class GamesService {
     return this.prisma.game.findMany();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} game`;
+  findOne(id: string): Promise<Game> {
+    return this.prisma.game.findUnique({ where: { id } });
   }
 
   update(id: string, dto: UpdateGameDto) {
