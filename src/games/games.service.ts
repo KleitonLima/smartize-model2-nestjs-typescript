@@ -25,6 +25,9 @@ export class GamesService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} game`;
+    return this.prisma.game.delete({
+      where: { id },
+      select: { name: true, price: true },
+    });
   }
 }
