@@ -8,8 +8,8 @@ import { Game } from './entities/game.entity';
 export class GamesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(dto: CreateGameDto) {
-    return `This action returns all games`;
+  create(dto: CreateGameDto): Promise<Game> {
+    return this.prisma.game.create({ data: dto });
   }
 
   findAll(): Promise<Game[]> {
