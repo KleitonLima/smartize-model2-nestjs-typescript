@@ -20,8 +20,8 @@ export class GamesService {
     return this.prisma.game.findUnique({ where: { id } });
   }
 
-  update(id: string, dto: UpdateGameDto) {
-    return `This action updates a #${id} game`;
+  update(id: string, dto: UpdateGameDto): Promise<Game> {
+    return this.prisma.game.update({ where: { id }, data: dto });
   }
 
   remove(id: string) {
