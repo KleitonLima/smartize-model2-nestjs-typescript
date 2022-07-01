@@ -11,6 +11,7 @@ import { GamesService } from './games.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Game } from './entities/game.entity';
 
 @ApiTags('games')
 @Controller('games')
@@ -29,7 +30,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'Exibir todos os jogos',
   })
-  findAll() {
+  findAll(): Promise<Game[]> {
     return this.gamesService.findAll();
   }
 
