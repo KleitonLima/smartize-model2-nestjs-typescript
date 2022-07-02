@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
@@ -26,8 +30,14 @@ export class UsersService {
       email: dto.email,
       password: hashedPassword,
     };
-    return this.prisma.user.create({
-      data,
+    return this.prisma.user.create({ data }).catch((error) => {
+      const splitedMessage = error.message.split('`');
+
+      const errorMessage = `O campo '${
+        splitedMessage[splitedMessage.length - 2]
+      }' não está respeitando a constraint UNIQUE`;
+
+      throw new UnprocessableEntityException(errorMessage);
     });
   }
 
