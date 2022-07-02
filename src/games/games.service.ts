@@ -48,17 +48,17 @@ export class GamesService {
   async update(id: string, dto: UpdateGameDto): Promise<Game | void> {
     await this.verifyIdAndReturnGame(id);
 
-    return this.prisma.game.update({ where: { id }, data: dto });
+    return this.prisma.game
+      .update({ where: { id }, data: dto })
+      .catch(this.handleErrorConstraintUnique);
   }
 
   async remove(id: string) {
     await this.verifyIdAndReturnGame(id);
 
-    return this.prisma.game
-      .delete({
-        where: { id },
-        select: { name: true, price: true },
-      })
-      .catch(this.handleErrorConstraintUnique);
+    return this.prisma.game.delete({
+      where: { id },
+      select: { name: true, price: true },
+    });
   }
 }
