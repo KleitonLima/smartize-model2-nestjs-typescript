@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
@@ -8,6 +8,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async verifyIdAndReturnUser(id: string): Promise<User> {
+    const user: User = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`O id ${id} não é válido`);
+    }
+    return user;
+  }
 
   create(dto: CreateUserDto): Promise<User> {
     const hashedPassword = bcrypt.hashSync(dto.password, 8);
@@ -26,15 +35,19 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  findOne(id: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id } });
+  findOne(id: string) {
+    return this.verifyIdAndReturnUser(id);
   }
 
-  update(id: string, dto: UpdateUserDto): Promise<User> {
+  async update(id: string, dto: UpdateUserDto): Promise<User> {
+    await this.verifyIdAndReturnUser(id);
+
     return this.prisma.user.update({ where: { id }, data: dto });
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    await this.verifyIdAndReturnUser(id);
+
     return this.prisma.user.delete({
       where: { id },
       select: { name: true, email: true },

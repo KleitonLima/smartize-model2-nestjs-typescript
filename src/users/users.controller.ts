@@ -31,7 +31,7 @@ export class UsersController {
     summary: 'Listar todos os usuários',
   })
   findAll(): Promise<User[]> {
-    return this.usersService.getAll();
+    return this.usersService.findAll();
   }
 
   @Get(':id')
@@ -39,7 +39,7 @@ export class UsersController {
     summary: 'Lista usuário pelo id',
   })
   findOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.getById(id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
@@ -55,6 +55,6 @@ export class UsersController {
     summary: 'Deletar usuário',
   })
   remove(@Param('id') id: string) {
-    return this.usersService.delete(id);
+    return this.usersService.remove(id);
   }
 }
