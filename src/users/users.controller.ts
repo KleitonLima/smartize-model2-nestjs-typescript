@@ -38,7 +38,7 @@ export class UsersController {
   @ApiOperation({
     summary: 'Lista usuário pelo id',
   })
-  findOne(@Param('id') id: string): Promise<User> {
+  findOne(@Param('id') id: string): Promise<User | void> {
     return this.usersService.findOne(id);
   }
 
@@ -46,7 +46,10 @@ export class UsersController {
   @ApiOperation({
     summary: 'Atualizar usuário',
   })
-  update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<User> {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateUserDto,
+  ): Promise<User | void> {
     return this.usersService.update(id, dto);
   }
 

@@ -22,7 +22,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'Criar novo jogo',
   })
-  create(@Body() dto: CreateGameDto) {
+  create(@Body() dto: CreateGameDto): Promise<Game | void> {
     return this.gamesService.create(dto);
   }
 
@@ -38,7 +38,7 @@ export class GamesController {
   @ApiOperation({
     summary: 'Exibir um jogo',
   })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Game | void> {
     return this.gamesService.findOne(id);
   }
 
@@ -46,7 +46,10 @@ export class GamesController {
   @ApiOperation({
     summary: 'Atualizar um jogo',
   })
-  update(@Param('id') id: string, @Body() dto: UpdateGameDto) {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateGameDto,
+  ): Promise<Game | void> {
     return this.gamesService.update(id, dto);
   }
 

@@ -22,7 +22,7 @@ export class UsersService {
     return user;
   }
 
-  handleError(error: Error): never {
+  handleErrorConstraintUnique(error: Error): never {
     const splitedMessage = error.message.split('`');
 
     const errorMessage = `O campo '${
@@ -40,18 +40,20 @@ export class UsersService {
       email: dto.email,
       password: hashedPassword,
     };
-    return this.prisma.user.create({ data }).catch(this.handleError);
+    return this.prisma.user
+      .create({ data })
+      .catch(this.handleErrorConstraintUnique);
   }
 
   findAll(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
 
-  findOne(id: string): Promise<User> {
+  findOne(id: string): Promise<User | void> {
     return this.verifyIdAndReturnUser(id);
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<User> {
+  async update(id: string, dto: UpdateUserDto): Promise<User | void> {
     await this.verifyIdAndReturnUser(id);
 
     return this.prisma.user.update({ where: { id }, data: dto });
@@ -65,6 +67,6 @@ export class UsersService {
         where: { id },
         select: { name: true, email: true },
       })
-      .catch(this.handleError);
+      .catch(this.handleErrorConstraintUnique);
   }
 }
