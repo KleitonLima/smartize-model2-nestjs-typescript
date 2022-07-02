@@ -56,17 +56,17 @@ export class UsersService {
   async update(id: string, dto: UpdateUserDto): Promise<User | void> {
     await this.verifyIdAndReturnUser(id);
 
-    return this.prisma.user.update({ where: { id }, data: dto });
+    return this.prisma.user
+      .update({ where: { id }, data: dto })
+      .catch(this.handleErrorConstraintUnique);
   }
 
   async remove(id: string) {
     await this.verifyIdAndReturnUser(id);
 
-    return this.prisma.user
-      .delete({
-        where: { id },
-        select: { name: true, email: true },
-      })
-      .catch(this.handleErrorConstraintUnique);
+    return this.prisma.user.delete({
+      where: { id },
+      select: { name: true, email: true },
+    });
   }
 }
