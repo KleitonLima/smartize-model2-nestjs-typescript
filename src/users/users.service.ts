@@ -22,7 +22,17 @@ export class UsersService {
     return user;
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
+  handleError(error: Error): never {
+    const splitedMessage = error.message.split('`');
+
+    const errorMessage = `O campo '${
+      splitedMessage[splitedMessage.length - 2]
+    }' não está respeitando a constraint UNIQUE`;
+
+    throw new UnprocessableEntityException(errorMessage);
+  }
+
+  async create(dto: CreateUserDto): Promise<User | void> {
     const hashedPassword = await bcrypt.hash(dto.password, 8);
 
     const data: CreateUserDto = {
@@ -30,22 +40,14 @@ export class UsersService {
       email: dto.email,
       password: hashedPassword,
     };
-    return this.prisma.user.create({ data }).catch((error) => {
-      const splitedMessage = error.message.split('`');
-
-      const errorMessage = `O campo '${
-        splitedMessage[splitedMessage.length - 2]
-      }' não está respeitando a constraint UNIQUE`;
-
-      throw new UnprocessableEntityException(errorMessage);
-    });
+    return this.prisma.user.create({ data }).catch(this.handleError);
   }
 
   findAll(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
 
-  findOne(id: string) {
+  findOne(id: string): Promise<User> {
     return this.verifyIdAndReturnUser(id);
   }
 
@@ -58,9 +60,11 @@ export class UsersService {
   async remove(id: string) {
     await this.verifyIdAndReturnUser(id);
 
-    return this.prisma.user.delete({
-      where: { id },
-      select: { name: true, email: true },
-    });
+    return this.prisma.user
+      .delete({
+        where: { id },
+        select: { name: true, email: true },
+      })
+      .catch(this.handleError);
   }
 }
