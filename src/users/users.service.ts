@@ -25,15 +25,15 @@ export class UsersService {
   handleErrorConstraintUnique(error: Error): never {
     const splitedMessage = error.message.split('`');
 
-    const errorMessage = `O campo '${
-      splitedMessage[splitedMessage.length - 2]
-    }' não está respeitando a constraint UNIQUE`;
+    const errorMessage = `O campo '${splitedMessage.at(
+      -2,
+    )}' não está respeitando a constraint UNIQUE`;
 
     throw new UnprocessableEntityException(errorMessage);
   }
 
   async create(dto: CreateUserDto): Promise<User | void> {
-    const hashedPassword = await bcrypt.hash(dto.password, 8);
+    const hashedPassword: string = await bcrypt.hash(dto.password, 8);
 
     const data: CreateUserDto = {
       name: dto.name,
