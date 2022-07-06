@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBagDto } from './dto/create-bag.dto';
 import { UpdateBagDto } from './dto/update-bag.dto';
 
 @Injectable()
 export class BagsService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(dto: CreateBagDto) {
     return 'This action adds a new bag';
   }
