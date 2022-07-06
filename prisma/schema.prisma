@@ -33,3 +33,12 @@ model Game {
 
   @@map("game")
 }
+
+model Cart {
+  id        String   @id @default(uuid())
+  number    Int      @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("cart")
+}
