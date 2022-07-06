@@ -25,9 +25,9 @@ export class UsersService {
   handleErrorConstraintUnique(error: Error): never {
     const splitedMessage = error.message.split('`');
 
-    const errorMessage = `O campo '${
-      splitedMessage[splitedMessage.length - 2]
-    }' não está respeitando a constraint UNIQUE`;
+    const errorMessage = `O campo '${splitedMessage.at(
+      -2,
+    )}' não está respeitando a constraint UNIQUE`;
 
     throw new UnprocessableEntityException(errorMessage);
   }
