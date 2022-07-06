@@ -22,7 +22,7 @@ export class GamesService {
   }
 
   handleErrorConstraintUnique(error: Error): never {
-    const splitedMessage = error.message.split('`');
+    const splitedMessage: string[] = error.message.split('`');
 
     const errorMessage = `O campo '${
       splitedMessage[splitedMessage.length - 2]
