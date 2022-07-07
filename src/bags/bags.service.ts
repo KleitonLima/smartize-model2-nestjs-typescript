@@ -41,8 +41,8 @@ export class BagsService {
     return this.prisma.bag.findMany();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} bag`;
+  findOne(id: string): Promise<Bag> {
+    return this.verifyIdAndReturnBag(id);
   }
 
   update(id: string, dto: UpdateBagDto) {
