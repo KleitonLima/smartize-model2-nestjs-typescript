@@ -45,8 +45,12 @@ export class BagsService {
     return this.verifyIdAndReturnBag(id);
   }
 
-  update(id: string, dto: UpdateBagDto) {
-    return `This action updates a #${id} bag`;
+  async update(id: string, dto: UpdateBagDto): Promise<Bag | void> {
+    await this.verifyIdAndReturnBag(id);
+
+    return this.prisma.bag
+      .update({ where: { id }, data: dto })
+      .catch(this.handleErrorConstraintUnique);
   }
 
   remove(id: string) {
