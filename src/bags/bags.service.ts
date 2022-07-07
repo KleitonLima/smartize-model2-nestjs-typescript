@@ -53,7 +53,9 @@ export class BagsService {
       .catch(this.handleErrorConstraintUnique);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} bag`;
+  async remove(id: string) {
+    await this.verifyIdAndReturnBag(id);
+
+    return this.prisma.bag.delete({ where: { id }, select: { number: true } });
   }
 }
