@@ -37,8 +37,8 @@ export class BagsService {
       .catch(this.handleErrorConstraintUnique);
   }
 
-  findAll() {
-    return `This action returns all bags`;
+  findAll(): Promise<Bag[]> {
+    return this.prisma.bag.findMany();
   }
 
   findOne(id: string) {
