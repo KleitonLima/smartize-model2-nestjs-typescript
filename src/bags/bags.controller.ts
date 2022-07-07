@@ -10,28 +10,32 @@ import {
 import { BagsService } from './bags.service';
 import { CreateBagDto } from './dto/create-bag.dto';
 import { UpdateBagDto } from './dto/update-bag.dto';
+import { Bag } from './entities/bag.entity';
 
 @Controller('bags')
 export class BagsController {
   constructor(private readonly bagsService: BagsService) {}
 
   @Post()
-  create(@Body() dto: CreateBagDto) {
+  create(@Body() dto: CreateBagDto): Promise<Bag | void> {
     return this.bagsService.create(dto);
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Bag[]> {
     return this.bagsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Bag> {
     return this.bagsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateBagDto) {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateBagDto,
+  ): Promise<Bag | void> {
     return this.bagsService.update(id, dto);
   }
 
