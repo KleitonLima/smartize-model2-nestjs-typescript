@@ -50,4 +50,6 @@ model Genre {
   name String @unique
 
   games Game[]
+
+  @@map("genre")
 }
