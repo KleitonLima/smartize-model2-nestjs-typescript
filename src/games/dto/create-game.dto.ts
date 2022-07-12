@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUrl, IsUUID } from 'class-validator';
 
 export class CreateGameDto {
   @IsNotEmpty()
@@ -18,13 +18,12 @@ export class CreateGameDto {
   })
   description: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   @ApiProperty({
-    description: 'O gênero do jogo',
-    example: 'Ação e aventura',
+    description: 'Id do gênero do jogo',
+    example: '7f2334a9-e2fb-40a6-a333-1d0ab8838916',
   })
-  genre: string;
+  genreId: string;
 
   @IsNumber({
     maxDecimalPlaces: 2,
