@@ -23,7 +23,7 @@ export class CreateGameDto {
     description: 'Id do gênero do jogo',
     example: '7f2334a9-e2fb-40a6-a333-1d0ab8838916',
   })
-  genre: string;
+  genreId: string;
 
   @IsNumber({
     maxDecimalPlaces: 2,

@@ -2,7 +2,7 @@ export class Game {
   id: string;
   name: string;
   description: string;
-  genre: string;
+  genreId: string;
   price: number;
   image: string;
   createdAt?: Date;
