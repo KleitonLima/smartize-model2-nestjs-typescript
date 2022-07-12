@@ -1,29 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleErrorConstraintUnique } from 'src/util/handle-error-unique.util';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
+import { Genre } from './entities/genre.entity';
 
 @Injectable()
 export class GenresService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(dto: CreateGenreDto) {
-    return dto;
+  async verifyIdAndReturnGenre(id: string): Promise<Genre> {
+    const genre: Genre = await this.prisma.genre.findUnique({ where: { id } });
+
+    if (!genre) {
+      throw new NotFoundException(`O id ${id} não é válido`);
+    }
+    return genre;
   }
 
-  findAll() {
-    return `This action returns all genres`;
+  async create(dto: CreateGenreDto): Promise<Genre> {
+    return await this.prisma.genre
+      .create({ data: dto })
+      .catch(handleErrorConstraintUnique);
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} genre`;
+  findAll(): Promise<Genre[]> {
+    return this.prisma.genre.findMany();
   }
 
-  update(id: string, dto: UpdateGenreDto) {
-    return `This action updates a #${dto} genre`;
+  findOne(id: string): Promise<Genre> {
+    return this.verifyIdAndReturnGenre(id);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} genre`;
+  async update(id: string, dto: UpdateGenreDto): Promise<Genre | void> {
+    await this.verifyIdAndReturnGenre(id);
+
+    return this.prisma.genre
+      .update({ where: { id }, data: dto })
+      .catch(handleErrorConstraintUnique);
+  }
+
+  async remove(id: string) {
+    await this.verifyIdAndReturnGenre(id);
+
+    return this.prisma.genre.delete({ where: { id }, select: { name: true } });
   }
 }

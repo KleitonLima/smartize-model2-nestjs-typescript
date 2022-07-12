@@ -11,6 +11,7 @@ import { GenresService } from './genres.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Genre } from '@prisma/client';
 
 @ApiTags('genres')
 @Controller('genres')
@@ -21,7 +22,7 @@ export class GenresController {
   @ApiOperation({
     summary: 'Criar novo gênero',
   })
-  create(@Body() dto: CreateGenreDto) {
+  create(@Body() dto: CreateGenreDto): Promise<Genre> {
     return this.genresService.create(dto);
   }
 
@@ -29,7 +30,7 @@ export class GenresController {
   @ApiOperation({
     summary: 'Exibir todos os gêneros',
   })
-  findAll() {
+  findAll(): Promise<Genre[]> {
     return this.genresService.findAll();
   }
 
@@ -37,7 +38,7 @@ export class GenresController {
   @ApiOperation({
     summary: 'Exibir um gênero',
   })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Genre> {
     return this.genresService.findOne(id);
   }
 
@@ -45,7 +46,10 @@ export class GenresController {
   @ApiOperation({
     summary: 'Atualizar um gênero',
   })
-  update(@Param('id') id: string, @Body() dto: UpdateGenreDto) {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateGenreDto,
+  ): Promise<Genre | void> {
     return this.genresService.update(id, dto);
   }
 
