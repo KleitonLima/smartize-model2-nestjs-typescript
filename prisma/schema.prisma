@@ -18,6 +18,8 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  games Game[]
+
   @@map("user")
 }
 
@@ -32,6 +34,8 @@ model Game {
   genreId     String   @map("genre_id")
 
   genre Genre @relation(fields: [genreId], references: [id])
+
+  users User[]
 
   @@map("game")
 }
