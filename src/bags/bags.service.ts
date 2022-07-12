@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { handleErrorConstraintUnique } from 'src/util/handle-error-unique.util';
+import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
 import { CreateBagDto } from './dto/create-bag.dto';
 import { UpdateBagDto } from './dto/update-bag.dto';
 import { Bag } from './entities/bag.entity';
