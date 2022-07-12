@@ -25,11 +25,13 @@ model Game {
   id          String   @id @default(uuid())
   name        String   @unique
   description String
-  genre       String
   price       Float
   image       String
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  genreId     String   @map("genre_id")
+
+  genre Genre @relation(fields: [genreId], references: [id])
 
   @@map("game")
 }
@@ -41,4 +43,11 @@ model Bag {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("bag")
+}
+
+model Genre {
+  id   String @id @default(uuid())
+  name String @unique
+
+  games Game[]
 }
