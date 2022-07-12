@@ -1,9 +1,6 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleErrorConstraintUnique } from 'src/util/handle-error-unique.util';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
@@ -21,20 +18,10 @@ export class GamesService {
     return game;
   }
 
-  handleErrorConstraintUnique(error: Error): never {
-    const splitedMessage: string[] = error.message.split('`');
-
-    const errorMessage = `O campo '${splitedMessage.at(
-      -2,
-    )}' não está respeitando a constraint UNIQUE`;
-
-    throw new UnprocessableEntityException(errorMessage);
-  }
-
   async create(dto: CreateGameDto): Promise<Game | void> {
     return await this.prisma.game
       .create({ data: dto })
-      .catch(this.handleErrorConstraintUnique);
+      .catch(handleErrorConstraintUnique);
   }
 
   findAll(): Promise<Game[]> {
@@ -50,7 +37,7 @@ export class GamesService {
 
     return this.prisma.game
       .update({ where: { id }, data: dto })
-      .catch(this.handleErrorConstraintUnique);
+      .catch(handleErrorConstraintUnique);
   }
 
   async remove(id: string) {
