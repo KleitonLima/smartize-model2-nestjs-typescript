@@ -12,6 +12,7 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Game } from './entities/game.entity';
+import { FavoriteGameDto } from './dto/create-favorite-game.dto';
 
 @ApiTags('games')
 @Controller('games')
@@ -59,5 +60,13 @@ export class GamesController {
   })
   remove(@Param('id') id: string) {
     return this.gamesService.remove(id);
+  }
+
+  @Post(':id/favorite')
+  @ApiOperation({
+    summary: 'Favoritar jogo',
+  })
+  favorite(@Param('id') id: string, @Body() dto: FavoriteGameDto) {
+    return this.gamesService.favorite(id, dto);
   }
 }

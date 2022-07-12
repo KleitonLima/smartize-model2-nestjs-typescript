@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
+import { FavoriteGameDto } from './dto/create-favorite-game.dto';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
@@ -47,5 +49,9 @@ export class GamesService {
       where: { id },
       select: { name: true, price: true },
     });
+  }
+
+  favorite(id: string, dto: FavoriteGameDto) {
+    return 'Criando';
   }
 }

@@ -18,7 +18,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  games Game[]
+  favorites Favorite[]
 
   @@map("user")
 }
@@ -35,7 +35,7 @@ model Game {
 
   genre Genre @relation(fields: [genreId], references: [id])
 
-  users User[]
+  favorites Favorite[]
 
   @@map("game")
 }
@@ -58,4 +58,16 @@ model Genre {
   games Game[]
 
   @@map("genre")
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  gameName  String   @map("game_id")
+
+  user User @relation(fields: [userId], references: [id])
+  game Game @relation(fields: [gameName], references: [name])
+
+  @@map("favorite")
 }
