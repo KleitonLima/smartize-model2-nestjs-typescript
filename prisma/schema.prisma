@@ -69,5 +69,6 @@ model Favorite {
   user User @relation(fields: [userId], references: [id])
   game Game @relation(fields: [gameName], references: [name])
 
+  @@unique([userId, gameName])
   @@map("favorite")
 }
