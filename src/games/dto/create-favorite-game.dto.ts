@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class FavoriteGameDto {
   @IsUUID()
@@ -9,6 +9,11 @@ export class FavoriteGameDto {
   })
   userId: string;
 
-  @IsUUID()
-  gameId: string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Nome do jogo a ser favoritado',
+    example: 'God of War',
+  })
+  gameName: string;
 }

@@ -62,7 +62,7 @@ export class GamesController {
     return this.gamesService.remove(id);
   }
 
-  @Post(':id/favorite')
+  @Post('favorite')
   @ApiOperation({
     summary: 'Favoritar jogo',
   })
