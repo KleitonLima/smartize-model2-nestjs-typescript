@@ -1,9 +1,6 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
 import { CreateBagDto } from './dto/create-bag.dto';
 import { UpdateBagDto } from './dto/update-bag.dto';
 import { Bag } from './entities/bag.entity';
@@ -21,20 +18,10 @@ export class BagsService {
     return bag;
   }
 
-  handleErrorConstraintUnique(error: Error): never {
-    const splitedMessage: string[] = error.message.split('`');
-
-    const errorMessage = `O campo '${splitedMessage.at(
-      -2,
-    )}' não está respeitando a constraint UNIQUE`;
-
-    throw new UnprocessableEntityException(errorMessage);
-  }
-
   async create(dto: CreateBagDto): Promise<Bag | void> {
     return await this.prisma.bag
       .create({ data: dto })
-      .catch(this.handleErrorConstraintUnique);
+      .catch(handleErrorConstraintUnique);
   }
 
   findAll(): Promise<Bag[]> {
@@ -50,7 +37,7 @@ export class BagsService {
 
     return this.prisma.bag
       .update({ where: { id }, data: dto })
-      .catch(this.handleErrorConstraintUnique);
+      .catch(handleErrorConstraintUnique);
   }
 
   async remove(id: string) {
