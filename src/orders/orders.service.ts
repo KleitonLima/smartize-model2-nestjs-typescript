@@ -36,7 +36,7 @@ export class OrdersService {
           id: dto.userId,
         },
       },
-      games: {
+      game: {
         connect: dto.games.map((element) => ({ id: element })),
       },
     };
