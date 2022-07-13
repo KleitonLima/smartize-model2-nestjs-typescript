@@ -54,7 +54,9 @@ export class UsersService {
     return this.verifyIdAndReturnUser(id);
   }
 
-  findFavoritesGames(id: string): Promise<Favorite[]> {
+  async findFavoritesGames(id: string): Promise<Favorite[]> {
+    await this.verifyIdAndReturnUser(id);
+
     return this.prisma.favorite.findMany({ where: { userId: id } });
   }
 

@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FavoriteGameDto } from 'src/favorites/dto/favorite.dto';
-import { Favorite } from 'src/favorites/entities/favorite.entity';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
+import { FavoriteGameDto } from 'src/favorites/dto/favorite.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
+import { User } from 'src/users/entities/users.entity';
 import { Game } from './entities/game.entity';
 
 @Injectable()
@@ -35,9 +36,7 @@ export class GamesService {
   }
 
   async findUsersLiked(id: string) {
-    const game: Game = await this.prisma.game.findUnique({
-      where: { id },
-    });
+    const game: Game = await this.verifyIdAndReturnGame(id);
 
     return this.prisma.favorite.findMany({
       where: { gameName: game.name },
@@ -65,11 +64,31 @@ export class GamesService {
     });
   }
 
-  favorite(id: string, dto: FavoriteGameDto): Promise<Favorite> {
+  async favorite(id: string, dto: FavoriteGameDto): Promise<Favorite> {
+    const game: Game = await this.prisma.game.findUnique({
+      where: { name: dto.gameName },
+    });
+
+    if (!game) {
+      throw new NotFoundException(`Jogo '${dto.gameName}' não encontrado`);
+    }
+
+    const user: User = await this.prisma.user.findUnique({
+      where: { id: dto.userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        `Usuário com id: '${dto.userId}' não encontrado`,
+      );
+    }
+
     return this.prisma.favorite.create({ data: dto });
   }
 
-  disfavoring(id: string) {
+  async disfavoring(id: string) {
+    await this.verifyIdAndReturnGame(id);
+
     return this.prisma.favorite.delete({ where: { id } });
   }
 }
