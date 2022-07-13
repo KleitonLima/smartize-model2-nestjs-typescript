@@ -31,9 +31,9 @@ model Game {
   image       String
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  genreId     String   @map("genre_id")
+  genreId     String?  @map("genre_id")
 
-  genre Genre @relation(fields: [genreId], references: [id])
+  genre Genre? @relation(fields: [genreId], references: [id], onDelete: SetNull)
 
   favorites Favorite[]
 
@@ -66,8 +66,8 @@ model Favorite {
   userId    String   @map("user_id")
   gameName  String   @map("game_id")
 
-  user User @relation(fields: [userId], references: [id])
-  game Game @relation(fields: [gameName], references: [name])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [gameName], references: [name], onDelete: Cascade)
 
   @@unique([userId, gameName])
   @@map("favorite")
