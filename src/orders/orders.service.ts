@@ -12,7 +12,12 @@ export class OrdersService {
     id: true,
     createdAt: true,
     bagNumber: true,
-    userId: true,
+    user: {
+      select: {
+        id: true,
+        name: true,
+      },
+    },
     games: {
       select: {
         name: true,
