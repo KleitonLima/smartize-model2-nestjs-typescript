@@ -34,6 +34,20 @@ export class GamesService {
     return this.verifyIdAndReturnGame(id);
   }
 
+  async findUsersLiked(id: string) {
+    const game: Game = await this.prisma.game.findUnique({
+      where: { id },
+    });
+
+    return this.prisma.favorite.findMany({
+      where: { gameName: game.name },
+      select: {
+        gameName: true,
+        user: { select: { id: true, name: true, email: true } },
+      },
+    });
+  }
+
   async update(id: string, dto: UpdateGameDto): Promise<Game | void> {
     await this.verifyIdAndReturnGame(id);
 

@@ -44,6 +44,14 @@ export class GamesController {
     return this.gamesService.findOne(id);
   }
 
+  @Get(':id/users')
+  @ApiOperation({
+    summary: 'Lista de usuários com o jogo favoritado ',
+  })
+  findUsersLiked(@Param('id') id: string) {
+    return this.gamesService.findUsersLiked(id);
+  }
+
   @Patch(':id')
   @ApiOperation({
     summary: 'Atualizar um jogo',
