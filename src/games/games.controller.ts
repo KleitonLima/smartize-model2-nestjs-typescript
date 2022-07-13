@@ -84,7 +84,7 @@ export class GamesController {
 
   @Delete('favorite/:id')
   @ApiOperation({
-    summary: 'Desfavoritar game',
+    summary: 'Desfavoritar jogo',
   })
   disfavoring(@Param('id') id: string) {
     return this.gamesService.disfavoring(id);
