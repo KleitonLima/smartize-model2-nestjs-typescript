@@ -1,26 +1,62 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  constructor(private readonly prisma: PrismaService) {}
+
+  private orderSelect = {
+    id: true,
+    createdAt: true,
+    bagNumber: true,
+    user: {
+      select: {
+        id: true,
+        name: true,
+      },
+    },
+    games: {
+      select: {
+        name: true,
+      },
+    },
+  };
+
+  create(dto: CreateOrderDto) {
+    const data: Prisma.OrderCreateInput = {
+      bag: {
+        connect: {
+          number: dto.bagNumber,
+        },
+      },
+      user: {
+        connect: {
+          id: dto.userId,
+        },
+      },
+      games: {
+        connect: dto.games.map((element) => ({ id: element })),
+      },
+    };
+
+    return this.prisma.order.create({
+      data,
+      select: this.orderSelect,
+    });
   }
 
   findAll() {
-    return `This action returns all orders`;
+    return this.prisma.order.findMany({
+      select: this.orderSelect,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
-  }
-
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  findOne(id: string) {
+    return this.prisma.order.findUnique({
+      where: { id },
+      select: this.orderSelect,
+    });
   }
 }
