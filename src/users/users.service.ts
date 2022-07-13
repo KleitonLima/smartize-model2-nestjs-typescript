@@ -22,7 +22,7 @@ export class UsersService {
   async verifyIdAndReturnUser(id: string): Promise<User> {
     const user: User = await this.prisma.user.findUnique({
       where: { id },
-      select: this.userSelect,
+      select: { ...this.userSelect, favorites: true },
     });
 
     if (!user) {
@@ -45,7 +45,9 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return this.prisma.user.findMany({ select: this.userSelect });
+    return this.prisma.user.findMany({
+      select: { ...this.userSelect, favorites: true },
+    });
   }
 
   findOne(id: string): Promise<User | void> {
