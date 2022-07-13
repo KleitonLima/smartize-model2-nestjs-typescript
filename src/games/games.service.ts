@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { FavoriteGameDto } from 'src/favorites/dto/favorite.dto';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
-import { FavoriteGameDto } from './dto/create-favorite-game.dto';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
@@ -50,7 +51,11 @@ export class GamesService {
     });
   }
 
-  favorite(id: string, dto: FavoriteGameDto) {
+  favorite(id: string, dto: FavoriteGameDto): Promise<Favorite> {
     return this.prisma.favorite.create({ data: dto });
+  }
+
+  disfavoring(id: string) {
+    return this.prisma.favorite.delete({ where: { id } });
   }
 }
