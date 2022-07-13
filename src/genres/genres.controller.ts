@@ -11,7 +11,7 @@ import { GenresService } from './genres.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Genre } from '@prisma/client';
+import { Genre } from './entities/genre.entity';
 
 @ApiTags('genres')
 @Controller('genres')
