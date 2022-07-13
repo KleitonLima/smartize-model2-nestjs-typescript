@@ -8,6 +8,18 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 export class OrdersService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private orderSelect = {
+    id: true,
+    createdAt: true,
+    bagNumber: true,
+    userId: true,
+    games: {
+      select: {
+        name: true,
+      },
+    },
+  };
+
   create(dto: CreateOrderDto) {
     const data: Prisma.OrderCreateInput = {
       bag: {
@@ -27,38 +39,21 @@ export class OrdersService {
 
     return this.prisma.order.create({
       data,
-      select: {
-        id: true,
-        createdAt: true,
-        bagNumber: true,
-        userId: true,
-        games: {
-          select: {
-            name: true,
-          },
-        },
-      },
+      select: this.orderSelect,
     });
   }
 
   findAll() {
     return this.prisma.order.findMany({
-      select: {
-        id: true,
-        createdAt: true,
-        bagNumber: true,
-        userId: true,
-        games: {
-          select: {
-            name: true,
-          },
-        },
-      },
+      select: this.orderSelect,
     });
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} order`;
+    return this.prisma.order.findUnique({
+      where: { id },
+      select: this.orderSelect,
+    });
   }
 
   update(id: string, dto: UpdateOrderDto) {
