@@ -8,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/users.entity';
@@ -40,6 +41,14 @@ export class UsersController {
   })
   findOne(@Param('id') id: string): Promise<User | void> {
     return this.usersService.findOne(id);
+  }
+
+  @Get(':id/favorites')
+  @ApiOperation({
+    summary: 'Lista de favoritos do usuário',
+  })
+  findFavoritesGames(@Param('id') id: string): Promise<Favorite[]> {
+    return this.usersService.findFavoritesGames(id);
   }
 
   @Patch(':id')
