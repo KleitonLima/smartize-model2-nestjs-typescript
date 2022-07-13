@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -59,13 +58,5 @@ export class OrdersService {
       where: { id },
       select: this.orderSelect,
     });
-  }
-
-  update(id: string, dto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} order`;
   }
 }
