@@ -37,7 +37,7 @@ model Game {
   genre   Genre?  @relation(fields: [genreId], references: [id], onDelete: SetNull)
 
   favorites Favorite[]
-  orders    Order[]
+  orders    OrderToGame[]
 
   @@map("game")
 }
@@ -88,7 +88,21 @@ model Order {
   userId String? @map("user_id")
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  games Game[]
+  game OrderToGame[]
 
   @@map("order")
+}
+
+model OrderToGame {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  gameId String? @map("game_id")
+  game   Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
+
+  orderId String? @map("order_id")
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  quantity Int
+  @@map("order_to_game")
 }
