@@ -19,7 +19,11 @@ export class OrdersService {
     },
     // games: {
     //   select: {
-    //     name: true,
+    //     game: {
+    //       select: {
+    //         name: true,
+    //       },
+    //     },
     //   },
     // },
   };
@@ -37,7 +41,9 @@ export class OrdersService {
         },
       },
       games: {
-        connect: dto.games.map((element) => ({ id: element })),
+        createMany: {
+          data: dto.games.map((element) => ({ id: element })),
+        },
       },
     };
 
