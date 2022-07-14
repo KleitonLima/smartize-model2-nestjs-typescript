@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID } from 'class-validator';
 
-export class CreateOrderToProductDto {
+export class CreateOrderToGameDto {
   @IsUUID()
   @ApiProperty({
     description: 'Id do pedido',
