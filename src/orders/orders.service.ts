@@ -17,11 +17,11 @@ export class OrdersService {
         name: true,
       },
     },
-    games: {
-      select: {
-        name: true,
-      },
-    },
+    // games: {
+    //   select: {
+    //     name: true,
+    //   },
+    // },
   };
 
   create(dto: CreateOrderDto) {
