@@ -17,11 +17,11 @@ export class OrdersService {
         name: true,
       },
     },
-    games: {
-      select: {
-        name: true,
-      },
-    },
+    // games: {
+    //   select: {
+    //     name: true,
+    //   },
+    // },
   };
 
   create(dto: CreateOrderDto) {
@@ -36,7 +36,7 @@ export class OrdersService {
           id: dto.userId,
         },
       },
-      game: {
+      games: {
         connect: dto.games.map((element) => ({ id: element })),
       },
     };

@@ -72,7 +72,7 @@ model Favorite {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   gameName String @map("game_id")
-  game     Game   @relation(fields: [gameName], references: [name], onDelete: Cascade)
+  games    Game   @relation(fields: [gameName], references: [name], onDelete: Cascade)
 
   @@unique([userId, gameName])
   @@map("favorite")
@@ -88,7 +88,7 @@ model Order {
   userId String? @map("user_id")
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  game OrderToGame[]
+  games OrderToGame[]
 
   @@map("order")
 }
@@ -97,12 +97,11 @@ model OrderToGame {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  gameId String? @map("game_id")
-  game   Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
-
   orderId String? @map("order_id")
   order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
 
-  quantity Int
+  gameId String? @map("game_id")
+  games  Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
+
   @@map("order_to_game")
 }
