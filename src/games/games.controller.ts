@@ -1,3 +1,8 @@
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateGameDto } from './dto/create-game.dto';
+import { UpdateGameDto } from './dto/update-game.dto';
+import { GamesService } from './games.service';
+import { Game } from './entities/game.entity';
 import {
   Controller,
   Get,
@@ -7,13 +12,6 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { GamesService } from './games.service';
-import { CreateGameDto } from './dto/create-game.dto';
-import { UpdateGameDto } from './dto/update-game.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Game } from './entities/game.entity';
-import { FavoriteGameDto } from 'src/favorites/dto/favorite.dto';
-import { Favorite } from 'src/favorites/entities/favorite.entity';
 
 @ApiTags('games')
 @Controller('games')
@@ -44,14 +42,6 @@ export class GamesController {
     return this.gamesService.findOne(id);
   }
 
-  @Get(':id/users')
-  @ApiOperation({
-    summary: 'Lista de usuários com o jogo favoritado ',
-  })
-  findUsersLiked(@Param('id') id: string) {
-    return this.gamesService.findUsersLiked(id);
-  }
-
   @Patch(':id')
   @ApiOperation({
     summary: 'Atualizar um jogo',
@@ -69,24 +59,5 @@ export class GamesController {
   })
   remove(@Param('id') id: string) {
     return this.gamesService.remove(id);
-  }
-
-  @Post('favorite')
-  @ApiOperation({
-    summary: 'Favoritar jogo',
-  })
-  favorite(
-    @Param('id') id: string,
-    @Body() dto: FavoriteGameDto,
-  ): Promise<Favorite> {
-    return this.gamesService.favorite(id, dto);
-  }
-
-  @Delete('favorite/:id')
-  @ApiOperation({
-    summary: 'Desfavoritar jogo',
-  })
-  disfavoring(@Param('id') id: string) {
-    return this.gamesService.disfavoring(id);
   }
 }

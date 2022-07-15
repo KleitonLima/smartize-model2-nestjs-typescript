@@ -18,7 +18,6 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  favorites Favorite[]
   orders    Order[]
 
   @@map("user")
@@ -36,7 +35,6 @@ model Game {
   genreId String? @map("genre_id")
   genre   Genre?  @relation(fields: [genreId], references: [id], onDelete: SetNull)
 
-  favorites Favorite[]
   orders    OrderToGame[]
 
   @@map("game")
@@ -62,20 +60,6 @@ model Genre {
   games Game[]
 
   @@map("genre")
-}
-
-model Favorite {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  gameName String @map("game_id")
-  games    Game   @relation(fields: [gameName], references: [name], onDelete: Cascade)
-
-  @@unique([userId, gameName])
-  @@map("favorite")
 }
 
 model Order {
