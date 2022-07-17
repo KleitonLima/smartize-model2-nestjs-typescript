@@ -28,4 +28,7 @@ export class FavoritesService {
   disfavoringGame(id: string) {
     return this.prisma.favorite.delete({ where: { id } });
   }
+  getUserFavorites(id: string) {
+    return this.prisma.favorite.findMany({ where: { userId: id } });
+  }
 }

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -24,5 +25,10 @@ export class FavoritesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   disfavoringGame(@Param('id') id: string) {
     return this.favoritesService.disfavoringGame(id);
+  }
+
+  @Get('user/:id')
+  getUserFavorites(@Param('id') id: string) {
+    return this.favoritesService.getUserFavorites(id);
   }
 }
