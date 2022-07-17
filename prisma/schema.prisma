@@ -103,4 +103,5 @@ model Favorite {
   games  Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
 
   @@map("favorite")
+  @@unique([userId,gameId])
 }
