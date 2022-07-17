@@ -31,4 +31,9 @@ export class FavoritesController {
   getUserFavorites(@Param('id') id: string) {
     return this.favoritesService.getUserFavorites(id);
   }
+
+  @Get('game/:id')
+  getGameFavoritedBy(@Param('id') id: string): Promise<Favorite[]> {
+    return this.favoritesService.getGameFavoritedBy(id);
+  }
 }

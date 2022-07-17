@@ -31,4 +31,8 @@ export class FavoritesService {
   getUserFavorites(id: string) {
     return this.prisma.favorite.findMany({ where: { userId: id } });
   }
+
+  getGameFavoritedBy(id: string): Promise<Favorite[]> {
+    return this.prisma.favorite.findMany({ where: { gameId: id } });
+  }
 }
