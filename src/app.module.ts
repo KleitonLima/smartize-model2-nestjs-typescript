@@ -9,7 +9,14 @@ import { OrdersModule } from './orders/orders.module';
 import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [UsersModule, GamesModule, BagsModule, GenresModule, OrdersModule, FavoritesModule],
+  imports: [
+    UsersModule,
+    GamesModule,
+    BagsModule,
+    GenresModule,
+    OrdersModule,
+    FavoritesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
