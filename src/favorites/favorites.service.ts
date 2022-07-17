@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FavoriteGameDto } from './dto/favorite-game.dto';
+import { Favorite } from './entities/favorite.entity';
 
 @Injectable()
 export class FavoritesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  favoriteGame(dto: FavoriteGameDto) {
+  favoriteGame(dto: FavoriteGameDto): Promise<Favorite> {
     const data: Prisma.FavoriteCreateInput = {
       users: {
         connect: {
@@ -22,5 +23,9 @@ export class FavoritesService {
     };
 
     return this.prisma.favorite.create({ data });
+  }
+
+  disfavoringGame(id: string) {
+    return this.prisma.favorite.delete({ where: { id } });
   }
 }
