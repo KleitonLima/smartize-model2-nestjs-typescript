@@ -7,6 +7,7 @@ import { BagsModule } from './bags/bags.module';
 import { GenresModule } from './genres/genres.module';
 import { OrdersModule } from './orders/orders.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     GenresModule,
     OrdersModule,
     FavoritesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
