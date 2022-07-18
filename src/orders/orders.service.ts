@@ -1,11 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { Order } from './entities/order.entity';
 
 @Injectable()
 export class OrdersService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async verifyIdAndReturnOrder(id: string): Promise<Order> {
+    const order: Order = await this.prisma.order.findUnique({ where: { id } });
+
+    if (!order) {
+      throw new NotFoundException(`O id ${id} não é válido`);
+    }
+    return order;
+  }
 
   private orderSelect = {
     id: true,
@@ -47,10 +58,12 @@ export class OrdersService {
       },
     };
 
-    return this.prisma.order.create({
-      data,
-      select: this.orderSelect,
-    });
+    return this.prisma.order
+      .create({
+        data,
+        select: this.orderSelect,
+      })
+      .catch(handleErrorConstraintUnique);
   }
 
   findAll() {
@@ -59,7 +72,9 @@ export class OrdersService {
     });
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
+    await this.verifyIdAndReturnOrder(id);
+
     return this.prisma.order.findUnique({
       where: { id },
       select: this.orderSelect,

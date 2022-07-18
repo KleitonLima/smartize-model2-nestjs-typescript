@@ -3,5 +3,5 @@ export class Order {
   createdAt: Date;
   bagNumber: number;
   userId: string;
-  games: string[];
+  games?: string[];
 }
