@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { Game } from 'src/games/entities/game.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from 'src/users/entities/users.entity';
+import { handleErrorConstraintUnique } from 'src/utils/handle-error-unique.util';
 import { FavoriteGameDto } from './dto/favorite-game.dto';
 import { Favorite } from './entities/favorite.entity';
 
@@ -62,7 +63,9 @@ export class FavoritesService {
       },
     };
 
-    return this.prisma.favorite.create({ data });
+    return this.prisma.favorite
+      .create({ data })
+      .catch(handleErrorConstraintUnique);
   }
 
   async disfavoringGame(id: string) {
