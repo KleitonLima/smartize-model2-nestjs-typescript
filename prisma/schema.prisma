@@ -19,6 +19,7 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   orders    Order[]
+  favorites Favorite[]
 
   @@map("user")
 }
@@ -36,6 +37,7 @@ model Game {
   genre   Genre?  @relation(fields: [genreId], references: [id], onDelete: SetNull)
 
   orders    OrderToGame[]
+  favorites Favorite[]
 
   @@map("game")
 }
@@ -88,4 +90,18 @@ model OrderToGame {
   games  Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
 
   @@map("order_to_game")
+}
+
+model Favorite {
+  id          String   @id @default(uuid())
+  favoritedAt DateTime @default(now()) @map("favorited_at")
+
+  userId String? @map("user_id")
+  users  User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  gameId String? @map("game_id")
+  games  Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
+
+  @@map("favorite")
+  @@unique([userId,gameId])
 }
