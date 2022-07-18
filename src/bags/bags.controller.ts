@@ -6,14 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BagsService } from './bags.service';
 import { CreateBagDto } from './dto/create-bag.dto';
 import { UpdateBagDto } from './dto/update-bag.dto';
 import { Bag } from './entities/bag.entity';
 
+@UseGuards(AuthGuard())
 @ApiTags('bags')
+@ApiBearerAuth()
 @Controller('bags')
 export class BagsController {
   constructor(private readonly bagsService: BagsService) {}

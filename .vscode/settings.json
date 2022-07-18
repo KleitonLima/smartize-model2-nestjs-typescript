@@ -1,8 +1,5 @@
 {
-    "editor.guides.bracketPairs": true,
-    "cSpell.words": [
-        "Deletar",
-        "favoritou",
-        "gênero"
-    ]
+  "editor.guides.bracketPairs": true,
+  "cSpell.words": ["Deletar", "favoritou", "gênero"],
+  "files.autoSave": "afterDelay"
 }
